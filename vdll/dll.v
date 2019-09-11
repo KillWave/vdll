@@ -20,8 +20,13 @@ fn dl_close(){
     C.dll_close()
 }
 fn main(){
-    open('./libtest.so')
-    fliename := 'm_pr'
-    C.dll_call(fliename.str,3,4,5,6)
-    dl_close()
+    open_ := open('./libtest.so')
+    if(open_ != -1){
+        fliename := 'm_pr'
+        format := '%i%i%s/i'
+        res := C.dll_call(fliename.str,3,format.str,5,5,fliename.str)
+        println(int(res))
+        dl_close()
+    }
+
 }

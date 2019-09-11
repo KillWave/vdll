@@ -3,11 +3,21 @@
 #include <dlfcn.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <ffi.h>
-void (*fnc)(void);
-void* handle;
+#include <string.h>
+typedef void (*fnc)(void);
 int dll_open(const char* path);
-void* dll_call(const char* fn_name,int len,...);
+void *dll_call(const char* fn_name,int len,const char* str_format,...);
 void dll_close(void);
-//void*(*fuc)(void* arg1,void* arg2,void* arg3,void* arg4,void* arg5,void* arg6,void* arg7,void* arg8,void* arg9,void* arg10,void* arg11,void* arg12);
+struct 
+{
+    va_list args;
+    ffi_type **arg_types;
+    void **arg_values;
+    ffi_type *returnFfiType;
+    ffi_closure *closure;
+    /* data */
+}dll;
+void arguments(char str_format,int i,int flag);
 #endif

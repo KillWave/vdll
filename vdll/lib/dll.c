@@ -74,7 +74,7 @@ void arguments(char str_format, int i, int flag)
             dll.arg_types[i] = &ffi_type_schar;
             void *ffiArgPtr = malloc(dll.arg_types[i]->size);
             char *argPtr = ffiArgPtr;
-            *argPtr=temp;
+            *argPtr = temp;
             dll.arg_values[i] = ffiArgPtr;
         }
         else
@@ -88,9 +88,9 @@ void arguments(char str_format, int i, int flag)
         {
             const char *temp = va_arg(dll.args, char *);
             dll.arg_types[i] = &ffi_type_pointer;
-            void *ffiArgPtr = malloc(dll.arg_types[i]->size);   
+            void *ffiArgPtr = malloc(dll.arg_types[i]->size);
             char **argPtr = ffiArgPtr;
-            *argPtr = malloc(sizeof(char)*strlen(temp));
+            *argPtr = malloc(sizeof(char) * strlen(temp));
             strcpy(*argPtr, temp);
             dll.arg_values[i] = ffiArgPtr;
         }
@@ -165,14 +165,6 @@ void *dll_call(const char *fn_name, int len, const char *str_format, ...)
         }
         //根据cif函数原型，函数指针，返回值内存指针，函数参数数据调用这个函数
         ffi_call(&cif, fn, returnPtr, dll.arg_values);
-        //释放实参内存
-        int n;
-        for (n = 0; n < i; n++)
-        {
-            //free(dll.arg_types[n]);
-            free(dll.arg_values[n]); /* code */
-        }
-        va_end(dll.args);
         switch (res)
         {
         case 'i':
@@ -197,6 +189,15 @@ void *dll_call(const char *fn_name, int len, const char *str_format, ...)
             break;
         }
     }
+    //释放实参内存
+    int n;
+    for (n = 0; n < i; n++)
+    {
+        //free(dll.arg_types[n]);
+        free(dll.arg_values[n]); /* code */
+    }
+    va_end(dll.args);
+    return NULL;
 }
 void dll_close(void)
 {

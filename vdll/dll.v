@@ -23,9 +23,9 @@ fn main(){
     open_ := open('./libtest.so')
     if(open_ != -1){
         fliename := 'm_pr'
-        format := '%i%i%s/i'
-        res := C.dll_call(fliename.str,3,format.str,5,5,fliename.str)
-        println(int(res))
+        format := '%f%i%s/s'
+        res := C.dll_call(fliename.str,3,format.str,5.11,5,fliename.str)
+        println(res)
         dl_close()
     }
 

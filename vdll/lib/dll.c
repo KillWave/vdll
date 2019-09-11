@@ -29,9 +29,7 @@ void arguments(char str_format, int i, int flag)
         }
         else
         {
-            //printf("%c\n",str_format);
             dll.returnFfiType = &ffi_type_sint;
-            /* code */
         }
 
         break;
@@ -48,25 +46,8 @@ void arguments(char str_format, int i, int flag)
         else
         {
             dll.returnFfiType = &ffi_type_double;
-            /* code */
         }
         break;
-    // case 'f':
-    //     if (flag)
-    //     {
-    //         float temp = va_arg(dll.args, float);
-    //         dll.arg_types[i] = &ffi_type_float;
-    //         void *ffiArgPtr = malloc(dll.arg_types[i]->size);
-    //         float *argPtr = ffiArgPtr;
-    //         *argPtr = temp;
-    //         dll.arg_values[i] = ffiArgPtr;
-    //     }
-    //     else
-    //     {
-    //         dll.returnFfiType = &ffi_type_float;
-    //         /* code */
-    //     }
-    //     break;
     case 'c':
         if (flag)
         {
@@ -74,13 +55,12 @@ void arguments(char str_format, int i, int flag)
             dll.arg_types[i] = &ffi_type_schar;
             void *ffiArgPtr = malloc(dll.arg_types[i]->size);
             char *argPtr = ffiArgPtr;
-            *argPtr = temp;
+            strcpy(argPtr,temp);
             dll.arg_values[i] = ffiArgPtr;
         }
         else
         {
             dll.returnFfiType = &ffi_type_schar;
-            /* code */
         }
         break;
     case 's':
@@ -97,7 +77,6 @@ void arguments(char str_format, int i, int flag)
         else
         {
             dll.returnFfiType = &ffi_type_pointer;
-            /* code */
         }
         break;
     case 'l':
@@ -113,7 +92,6 @@ void arguments(char str_format, int i, int flag)
         else
         {
             dll.returnFfiType = &ffi_type_slong;
-            /* code */
         }
         break;
     default:
@@ -140,10 +118,8 @@ void *dll_call(const char *fn_name, int len, const char *str_format, ...)
             i++;
             break;
         case '/':
-            //printf("%c\n",*str_format);
             ar = *str_format++;
             res = str_format[strlen(str_format) - 1];
-            //printf("%c\n",res);
             arguments(res, i - 1, 0);
             break;
         default:
@@ -168,19 +144,16 @@ void *dll_call(const char *fn_name, int len, const char *str_format, ...)
         switch (res)
         {
         case 'i':
-            /* code */
             return *(int *)returnPtr;
             break;
         case 'f':
-            /* code */
             return (double *)returnPtr;
             break;
         case 'c':
-            /* code */
+
             return *(char *)returnPtr;
             break;
         case 'l':
-            /* code */
             return *(long *)returnPtr;
             break;
 
@@ -193,8 +166,7 @@ void *dll_call(const char *fn_name, int len, const char *str_format, ...)
     int n;
     for (n = 0; n < i; n++)
     {
-        //free(dll.arg_types[n]);
-        free(dll.arg_values[n]); /* code */
+        free(dll.arg_values[n]);
     }
     va_end(dll.args);
     return NULL;
